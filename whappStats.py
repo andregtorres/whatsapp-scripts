@@ -6,8 +6,8 @@ import emoji
 import re
 from datetime import datetime
 
-d = path.dirname(__file__)
-
+#d = path.dirname(__file__)
+d="./"
 # Read the whole text.
 class message(object):
     def __init__(self, date, sender, media, words, emojis):
@@ -29,9 +29,9 @@ class db(object):
         f= open(path.join(d, pathString))
         for line in f:
             try:
-                date=datetime.strptime(line[0:17].rstrip(" "),'%d/%m/%Y, %H:%M')
+                date=datetime.strptime(line[0:15].rstrip(" "),'%d/%m/%y, %H:%M')
                 self.size+=1
-                sender=line[19:].split(":")[0].lstrip(" ")
+                sender=line[18:].split(":")[0].lstrip(" ")
                 if sender not in self.senders:
                     self.senders.append(sender)
                 restOfLine="".join(line[20:].split(": ")[1:]).rstrip("\n")
@@ -41,7 +41,7 @@ class db(object):
                 if not media:
                     for word in restOfLine.split():
                         words+=1
-                        decode= word.decode('utf-8')
+                        decode= word#.decode('utf-8')
                         for c in decode:
                             if c in emoji.UNICODE_EMOJI:
                                 emojis+=1
@@ -52,7 +52,7 @@ class db(object):
                 media= False
                 for word in restOfLine.split():
                     words+=1
-                    decode= word.decode('utf-8')
+                    decode= word#.decode('utf-8')
                     for c in decode:
                         if c in emoji.UNICODE_EMOJI:
                             emojis+=1
@@ -61,8 +61,8 @@ class db(object):
             self.totalwords+=words
             self.totalemojis+=emojis
 
-        print self.size, "messages loaded from", self.messages[0].date.strftime('%d/%m/%Y %H:%M'), "to", self.messages[-1].date.strftime('%d/%m/%Y %H:%M')
-        print self.senders
+        print(self.size, "messages loaded from", self.messages[0].date.strftime('%d/%m/%Y %H:%M'), "to", self.messages[-1].date.strftime('%d/%m/%Y %H:%M'))
+        print(self.senders)
 
     def __str__(self):
         return self.size
@@ -80,7 +80,7 @@ class db(object):
                 participant[x][2]+=message.words
                 participant[x][3]+=message.emojis
         #message.date.strftime('%d/%m/%Y %H:%M') ,
-        print participant
+        print(participant)
 
     def exportByWeekDay(self):
         participants=[]
@@ -97,10 +97,10 @@ class db(object):
                 participants[x][message.date.weekday()][3]+=message.emojis
         #message.date.strftime('%d/%m/%Y %H:%M') ,
         for participant in participants:
-            print " ".join(str(val) for val in participant)
+            print(" ".join(str(val) for val in participant))
 
 myDb=db()
-myDb.load('310118.txt')
+myDb.load('agatka.txt')
 myDb.exportByPerson()
 myDb.exportByWeekDay()
 

@@ -12,21 +12,25 @@ from datetime import datetime
 import numpy as np
 import matplotlib.pyplot as plt
 
-d = path.dirname(__file__)
-
+#d = path.dirname(__file__)
+d="./"
 # Read the whole text.
 text=""
-f= open(path.join(d, '../wappStats/310118.txt'))
+#f= open(path.join(d, '../wappStats/310118.txt'))
+f= open(path.join(d, 'agatka.txt'))
+
 i=0
 for line in f:
+    if i ==0:
+        print(line, datetime.strptime(line[0:15].rstrip(" "),'%d/%m/%y, %H:%M'), line[18:],"".join(line[18:].split(": ")[1:]).rstrip("\n"))
     try:
-        date=datetime.strptime(line[0:17].rstrip(" "),'%d/%m/%Y, %H:%M')
-        restOfLine="".join(line[20:].split(": ")[1:]).rstrip("\n")
+        date=datetime.strptime(line[0:15].rstrip(" "),'%d/%m/%y, %H:%M')
+        restOfLine="".join(line[18:].split(": ")[1:]).rstrip("\n")
     except: #messages with \n (date fails)
         restOfLine=line.rstrip("\n")
     if (restOfLine != "<Media omitted>"):
         for word in restOfLine.split():
-            decode= word.decode('utf-8')
+            decode= word#.decode('utf-8')
             good= True
             for c in decode:
                 if c in emoji.UNICODE_EMOJI:
@@ -36,7 +40,7 @@ for line in f:
                 text+=(''.join(decode))
                 text+=(" ")
                 i+=1
-                print i
+                #print(i)
 #print text
 
 
@@ -56,12 +60,12 @@ stopwords.add("still")
 stopwords.add("now")
 stopwords.add("really")
 stopwords.add("later")
-stopwords.add("ok")
-stopwords.add("going")
+#stopwords.add("ok")
+#stopwords.add("going")
 stopwords.add("go")
-stopwords.add("well")
+#stopwords.add("well")
 stopwords.add("nd")
-stopwords.add("yeah")
+#stopwords.add("yeah")
 stopwords.add("got")
 stopwords.add("'m'")
 stopwords.add("o")
@@ -90,7 +94,7 @@ for key, value in dic.items():
 word_freq.sort(reverse=True)
 
 # read the mask image
-h_mask = np.array(Image.open(path.join(d, "bearkoala2.png")))
+h_mask = np.array(Image.open(path.join(d, "blue.png")))
 
 
 wc = WordCloud(background_color="white", max_words=10000, mask=h_mask,
